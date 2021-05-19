@@ -20,10 +20,9 @@
     {% endif %}
   </li>
 </ul>
-
   <div class="row">
-    <div class="col-md-8 col-sm-10 col-12">
-      <h2>Sign up as a {{ user_type }}</h2>
+    <div class="col-md-8 col-sm-10 col-12"><br>
+      <h2>Зарегистрироваться за {{ user_type }}</h2>
       <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="далее" value="{{ next }}">
