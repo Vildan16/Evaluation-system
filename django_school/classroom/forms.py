@@ -51,7 +51,10 @@ class StudentInterestsForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ('text', )
+        fields = ('text', 'type', )
+        widgets = {
+          'type': forms.Textarea(attrs={'rows':1, 'cols':10}),
+        }
 
 
 class BaseAnswerInlineFormSet(forms.BaseInlineFormSet):
