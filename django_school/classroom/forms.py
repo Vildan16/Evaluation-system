@@ -65,7 +65,7 @@ class BaseAnswerInlineFormSet(forms.BaseInlineFormSet):
                     has_one_correct_answer = True
                     break
         if not has_one_correct_answer:
-            raise ValidationError('Mark at least one answer as correct.', code='no_correct_answer')
+            raise ValidationError('Отметьте хотя бы один ответ как правильный.', code='no_correct_answer')
 
 
 class TakeQuizForm(forms.ModelForm):
