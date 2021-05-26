@@ -16,6 +16,7 @@ from ..decorators import student_required
 from ..forms import StudentInterestsForm, StudentSignUpForm, TakeQuizForm
 from ..models import Quiz, Student, TakenQuiz, Question
 
+
 User = get_user_model()
 
 class StudentSignUpView(CreateView):
@@ -111,6 +112,9 @@ def take_quiz(request, pk):
         return render(request, 'students/taken_quiz.html')
 
     total_questions = quiz.questions.count()
+    total_questions1 = quiz.questions.filter(type="1").count()
+    total_questions2 = quiz.questions.filter(type="2").count()
+    total_questions3 = quiz.questions.filter(type="3").count()
     unanswered_questions = student.get_unanswered_questions(quiz)
     total_unanswered_questions = unanswered_questions.count()
     progress = 100 - round(((total_unanswered_questions - 1) / total_questions) * 100)
@@ -127,14 +131,32 @@ def take_quiz(request, pk):
                     return redirect('students:take_quiz', pk)
                 else:
                     correct_answers = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
-                    percentage = round((correct_answers / total_questions) * 100.0, 2)
-                    TakenQuiz.objects.create(student=student, quiz=quiz, score=correct_answers, percentage= percentage)
+                    correct_answers1 = student.quiz_answers.filter(answer__question__quiz=quiz,
+                                                                   answer__question__type="1",
+                                                                   answer__is_correct=True).count()
+
+                    correct_answers2 = student.quiz_answers.filter(answer__question__quiz=quiz,
+                                                                   answer__question__type="2",
+                                                                   answer__is_correct=True).count()
+
+                    correct_answers3 = student.quiz_answers.filter(answer__question__quiz=quiz,
+                                                                   answer__question__type="3",
+                                                                   answer__is_correct=True).count()
+
+                    percentage1 = round((correct_answers1 / total_questions1) * 100.0, 2)
+                    percentage2 = round((correct_answers2 / total_questions2) * 100.0, 2)
+                    percentage3 = round((correct_answers3 / total_questions3) * 100.0, 2)
+                    percentage = round((percentage1 * percentage2 * percentage3) ** (1/3))
+                    TakenQuiz.objects.create(student=student, quiz=quiz, score=correct_answers, percentage= percentage,
+                                            score1=correct_answers1, score2=correct_answers2, score3=correct_answers3)
                     student.score = TakenQuiz.objects.filter(student=student).aggregate(Sum('score'))['score__sum']
                     student.save()
                     if percentage < 50.0:
-                        messages.warning(request, 'Better luck next time! Your score for the quiz %s was %s.' % (quiz.name, percentage))
+                        messages.warning(request, 'Старайся лучше! Твой результат: %s. \nПолнота: %s \nЦелостность: %s \nУмения: %s'
+                                         % (percentage, percentage1, percentage2, percentage3))
                     else:
-                        messages.success(request, 'Congratulations! You completed the quiz %s with success! You scored %s points.' % (quiz.name, percentage))
+                        messages.success(request, 'Поздравляю! Твой результат: %s. \nПолнота: %s \nЦелостность: %s \nУмения: %s'
+                                         % (percentage, percentage1, percentage2, percentage3))
                     # return redirect('students:quiz_list')
                     return redirect('students:student_quiz_results', pk)
     else:
