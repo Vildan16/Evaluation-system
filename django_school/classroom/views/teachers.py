@@ -58,7 +58,7 @@ class QuizCreateView(CreateView):
         quiz = form.save(commit=False)
         quiz.owner = self.request.user
         quiz.save()
-        messages.success(self.request, 'The quiz was created with success! Go ahead and add some questions now.')
+        messages.success(self.request, 'Тест успешно создан.')
         return redirect('teachers:quiz_change', quiz.pk)
 
 
@@ -94,7 +94,7 @@ class QuizDeleteView(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         quiz = self.get_object()
-        messages.success(request, 'The quiz %s was deleted with success!' % quiz.name)
+        messages.success(request, 'Тест %s успешно удален!' % quiz.name)
         return super().delete(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -140,7 +140,7 @@ def question_add(request, pk):
             question = form.save(commit=False)
             question.quiz = quiz
             question.save()
-            messages.success(request, 'You may now add answers/options to the question.')
+            messages.success(request, 'Добавьте вопросы к тесту.')
             return redirect('teachers:question_change', quiz.pk, question.pk)
     else:
         form = QuestionForm()
@@ -178,7 +178,7 @@ def question_change(request, quiz_pk, question_pk):
             with transaction.atomic():
                 form.save()
                 formset.save()
-            messages.success(request, 'Question and answers saved with success!')
+            messages.success(request, 'Вопрос и ответы успешно сохранены!')
             return redirect('teachers:quiz_change', quiz.pk)
     else:
         form = QuestionForm(instance=question)
@@ -206,7 +206,7 @@ class QuestionDeleteView(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         question = self.get_object()
-        messages.success(request, 'The question %s was deleted with success!' % question.text)
+        messages.success(request, 'Вопрос %s успешно удален!' % question.text)
         return super().delete(request, *args, **kwargs)
 
     def get_queryset(self):
