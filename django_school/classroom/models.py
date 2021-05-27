@@ -74,6 +74,9 @@ class TakenQuiz(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='taken_quizzes')
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='taken_quizzes')
     score = models.IntegerField()
+    score1 = models.FloatField()
+    score2 = models.FloatField()
+    score3 = models.FloatField()
     percentage = models.FloatField()
     date = models.DateTimeField(auto_now_add=True)
 

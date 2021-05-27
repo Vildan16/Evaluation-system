@@ -36,7 +36,7 @@ class StudentSignUpForm(UserCreationForm):
         user.is_student = True
         user.save()
         """Интересы юзера добавляются"""
-        #student = Student.objects.create(user=user)
+        student = Student.objects.create(user=user)
         #student.interests.add(*self.cleaned_data.get('interests'))
         return user
 
