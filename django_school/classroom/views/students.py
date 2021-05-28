@@ -115,6 +115,7 @@ def take_quiz(request, pk):
     total_questions1 = quiz.questions.filter(type="1").count()
     total_questions2 = quiz.questions.filter(type="2").count()
     total_questions3 = quiz.questions.filter(type="3").count()
+
     unanswered_questions = student.get_unanswered_questions(quiz)
     total_unanswered_questions = unanswered_questions.count()
     progress = 100 - round(((total_unanswered_questions - 1) / total_questions) * 100)
@@ -145,7 +146,10 @@ def take_quiz(request, pk):
 
                     percentage1 = round((correct_answers1 / total_questions1) * 100.0, 2)
                     percentage2 = round((correct_answers2 / total_questions2) * 100.0, 2)
-                    percentage3 = round((correct_answers3 / total_questions3) * 100.0, 2)
+                    if total_questions3 == 0:
+                        percentage3 = round((percentage1 * percentage2) ** (1 / 2), 2)
+                    else:
+                        percentage3 = round((correct_answers3 / total_questions3) * 100.0, 2)
                     percentage = round((percentage1 * percentage2 * percentage3) ** (1/3))
                     TakenQuiz.objects.create(student=student, quiz=quiz, score=correct_answers, percentage= percentage,
                                             score1=correct_answers1, score2=correct_answers2, score3=correct_answers3)
