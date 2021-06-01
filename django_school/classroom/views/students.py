@@ -86,7 +86,10 @@ class QuizResultsView(View):
         
         # questions = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'questions':questions, 
-            'quiz':quiz, 'percentage': taken_quiz[0].percentage})
+            'quiz':quiz, 'percentage': taken_quiz[0].percentage,
+                                                    "score1": taken_quiz[0].score1,
+                                                    "score2": taken_quiz[0].score2,
+                                                    "score3": taken_quiz[0].score3,})
 
 
 @method_decorator([login_required, student_required], name='dispatch')
@@ -152,7 +155,7 @@ def take_quiz(request, pk):
                         percentage3 = round((correct_answers3 / total_questions3) * 100.0, 2)
                     percentage = round((percentage1 * percentage2 * percentage3) ** (1/3))
                     TakenQuiz.objects.create(student=student, quiz=quiz, score=correct_answers, percentage= percentage,
-                                            score1=correct_answers1, score2=correct_answers2, score3=correct_answers3)
+                                            score1=percentage1, score2=percentage2, score3=percentage3)
                     student.score = TakenQuiz.objects.filter(student=student).aggregate(Sum('score'))['score__sum']
                     student.save()
                     if percentage < 50.0:

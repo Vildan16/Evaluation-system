@@ -53,7 +53,7 @@ class StudentInterestsForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ('text', 'type', )
+        fields = ('text', 'type', 'image')
         widgets = {
           'type': forms.Textarea(attrs={'rows':1, 'cols':10}),
         }

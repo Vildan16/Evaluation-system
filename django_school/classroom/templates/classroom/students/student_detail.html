@@ -23,19 +23,23 @@
     <table class="table mb-0">
       
       <tbody>
-      	<tr><td>E-mail</td><td>{{student.user.email}}</td></tr>
       	<tr><td>Логин</td><td>{{student.user.username}}</td></tr>
       	<tr><td>Имя</td><td>{{student.user.get_full_name}}</td></tr>
-      	<tr><td>POINTS</td><td>{{student.score}}</td></tr>
+        <script type="text/javascript">
+            function alterText(){
+                document.getElementById('hello').innerHTML = empDesignation();
+            }
+            function empDesignation(){
+                var output = "{{student.score}}"
+                return output
+            }
+        </script>
+        <body onload="javascript:alterText()">
+            <p>Вывод: <a id="hello"></a></p>
+        </body>
       </tbody>
     </table>
 	</div>
   </div>
-</div><hr>
-<h3>Top Subjects</h3>
-{% for subject in subjects %}
-	<span class="badge badge-primary" style="background-color:{{subject.quiz__subject__color}}">
-		{{subject.quiz__subject__name}}
-	</span> x {{subject.score}}
-{% endfor %}
+</div>
 {% endblock %}
