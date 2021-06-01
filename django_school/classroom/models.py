@@ -56,6 +56,10 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     quizzes = models.ManyToManyField(Quiz, through='TakenQuiz')
     interests = models.ManyToManyField(Subject, related_name='interested_students')
+    email = models.CharField(default="", max_length=30)
+    first_name = models.CharField(default="", max_length=30)
+    last_name = models.CharField(default="", max_length=30)
+    group = models.CharField(default="", max_length=10)
     
     # User reputation score.
     score = models.FloatField(default=0)
@@ -69,6 +73,16 @@ class Student(models.Model):
             .values_list('answer__question__pk', flat=True)
         questions = quiz.questions.exclude(pk__in=answered_questions).order_by('text')
         return questions
+
+    def __str__(self):
+        return self.user.username
+
+
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    email = models.CharField(default="", max_length=30)
+    first_name = models.CharField(default="", max_length=30)
+    last_name = models.CharField(default="", max_length=30)
 
     def __str__(self):
         return self.user.username
