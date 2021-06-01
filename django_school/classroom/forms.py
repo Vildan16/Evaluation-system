@@ -4,10 +4,15 @@ from django.db import transaction
 from django.forms.utils import ValidationError
 
 from classroom.models import (Answer, Question, Student, StudentAnswer,
-                              Subject, User)
+                              Subject, User, Teacher)
 
 
 class TeacherSignUpForm(UserCreationForm):
+
+    email = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+
     class Meta(UserCreationForm.Meta):
         model = User
 
@@ -16,6 +21,10 @@ class TeacherSignUpForm(UserCreationForm):
         user.is_teacher = True
         if commit:
             user.save()
+        teacher = Teacher.objects.create(user=user,
+                                         email=self.cleaned_data.get('email'),
+                                         first_name=self.cleaned_data.get('first_name'),
+                                         last_name=self.cleaned_data.get('last_name'),)
         return user
 
 
@@ -26,6 +35,10 @@ class StudentSignUpForm(UserCreationForm):
     #    widget=forms.CheckboxSelectMultiple,
     #    required=True
     #)
+    email = forms.CharField()
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    group = forms.CharField()
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -36,8 +49,11 @@ class StudentSignUpForm(UserCreationForm):
         user.is_student = True
         user.save()
         """Интересы юзера добавляются"""
-        student = Student.objects.create(user=user)
-        #student.interests.add(*self.cleaned_data.get('interests'))
+        student = Student.objects.create(user=user,
+                                         email=self.cleaned_data.get('email'),
+                                         first_name=self.cleaned_data.get('first_name'),
+                                         last_name=self.cleaned_data.get('last_name'),
+                                         group=self.cleaned_data.get('group'))
         return user
 
 
@@ -53,7 +69,7 @@ class StudentInterestsForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ('text', 'type', )
+        fields = ('text', 'type', 'image')
         widgets = {
           'type': forms.Textarea(attrs={'rows':1, 'cols':10}),
         }

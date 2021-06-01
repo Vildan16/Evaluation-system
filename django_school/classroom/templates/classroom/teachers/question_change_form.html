@@ -14,7 +14,8 @@
   <form method="post" novalidate>
     {% csrf_token %}
     {{ formset.management_form }}
-    {{ form|crispy }}
+   {{ form|crispy }}
+    <h5 class="mb-3">Вопрос: {{ question.text }}</h5>
     <div class="card mb-3{% if formset.errors %} border-danger{% endif %}">
       <div class="card-header">
         <div class="row">

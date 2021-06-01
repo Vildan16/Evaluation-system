@@ -35,6 +35,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+    image = models.ImageField(upload_to="static/img/", blank=True, default="0")
     text = models.TextField('Question')
     type = models.TextField('Type')
 
@@ -55,9 +56,16 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     quizzes = models.ManyToManyField(Quiz, through='TakenQuiz')
     interests = models.ManyToManyField(Subject, related_name='interested_students')
+    email = models.CharField(default="", max_length=30)
+    first_name = models.CharField(default="", max_length=30)
+    last_name = models.CharField(default="", max_length=30)
+    group = models.CharField(default="", max_length=10)
     
     # User reputation score.
-    score = models.IntegerField(default=0)
+    score = models.FloatField(default=0)
+    score1 = models.FloatField(default=0)
+    score2 = models.FloatField(default=0)
+    score3 = models.FloatField(default=0)
 
     def get_unanswered_questions(self, quiz):
         answered_questions = self.quiz_answers \
@@ -65,6 +73,16 @@ class Student(models.Model):
             .values_list('answer__question__pk', flat=True)
         questions = quiz.questions.exclude(pk__in=answered_questions).order_by('text')
         return questions
+
+    def __str__(self):
+        return self.user.username
+
+
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    email = models.CharField(default="", max_length=30)
+    first_name = models.CharField(default="", max_length=30)
+    last_name = models.CharField(default="", max_length=30)
 
     def __str__(self):
         return self.user.username
