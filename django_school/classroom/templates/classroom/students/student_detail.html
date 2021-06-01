@@ -25,6 +25,10 @@
       <tbody>
       	<tr><td>Логин</td><td>{{student.user.username}}</td></tr>
       	<tr><td>Имя</td><td>{{student.user.get_full_name}}</td></tr>
+        <tr><td>Общий</td><td>{{student.score}}</td></tr>
+        <tr><td>Полнота</td><td>{{student.score1}}</td></tr>
+        <tr><td>Целостность</td><td>{{student.score2}}</td></tr>
+        <tr><td>Умения</td><td>{{student.score3}}</td></tr>
         <script type="text/javascript">
             function alterText(){
                 document.getElementById('hello').innerHTML = empDesignation();

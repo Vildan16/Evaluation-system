@@ -9,7 +9,7 @@
       <li class="breadcrumb-item active" aria-current="page">{{quiz.name}}</li>
     </ol>
 </nav>
-<!-- <h2>{{quiz.name}}</h2> -->
+
 {{ quiz.subject.get_html_badge }}
 
 <div class="progress">
@@ -36,11 +36,10 @@
 </div>
 <br>
 {% endfor %}
-<p>a</p>
-  <p>{{ score1 }}</p>
-  <p>{{ score2 }}</p>
-  <p>{{ score3 }}</p>
-<p>a</p>
+  <p>Общий: {{ percentage }}</p>
+  <p>Полнота: {{ score1 }}</p>
+  <p>Целостность {{ score2 }}</p>
+  <p>Умения {{ score3 }}</p>
 {% endblock %}
 
 {% block js %}

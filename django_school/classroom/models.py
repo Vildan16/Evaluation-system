@@ -58,7 +58,10 @@ class Student(models.Model):
     interests = models.ManyToManyField(Subject, related_name='interested_students')
     
     # User reputation score.
-    score = models.IntegerField(default=0)
+    score = models.FloatField(default=0)
+    score1 = models.FloatField(default=0)
+    score2 = models.FloatField(default=0)
+    score3 = models.FloatField(default=0)
 
     def get_unanswered_questions(self, quiz):
         answered_questions = self.quiz_answers \

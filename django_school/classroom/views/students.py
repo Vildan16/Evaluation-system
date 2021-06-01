@@ -87,6 +87,7 @@ class QuizResultsView(View):
         # questions = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'questions':questions, 
             'quiz':quiz, 'percentage': taken_quiz[0].percentage,
+                                                    "score" : taken_quiz[0].score,
                                                     "score1": taken_quiz[0].score1,
                                                     "score2": taken_quiz[0].score2,
                                                     "score3": taken_quiz[0].score3,})
@@ -156,7 +157,19 @@ def take_quiz(request, pk):
                     percentage = round((percentage1 * percentage2 * percentage3) ** (1/3))
                     TakenQuiz.objects.create(student=student, quiz=quiz, score=correct_answers, percentage= percentage,
                                             score1=percentage1, score2=percentage2, score3=percentage3)
-                    student.score = TakenQuiz.objects.filter(student=student).aggregate(Sum('score'))['score__sum']
+
+                    student.score += percentage
+                    student.score /= TakenQuiz.objects.filter(student=student).count()
+
+                    student.score1 += percentage1
+                    student.score1 /= TakenQuiz.objects.filter(student=student).count()
+
+                    student.score2 += percentage2
+                    student.score2 /= TakenQuiz.objects.filter(student=student).count()
+
+                    student.score3 += percentage3
+                    student.score3 /= TakenQuiz.objects.filter(student=student).count()
+
                     student.save()
                     if percentage < 50.0:
                         messages.warning(request, 'Старайся лучше! Твой результат: %s. \nПолнота: %s \nЦелостность: %s \nУмения: %s'
