@@ -19,6 +19,8 @@ from ..decorators import student_required
 from ..forms import StudentInterestsForm, StudentSignUpForm, TakeQuizForm
 from ..models import Quiz, Student, TakenQuiz, Question
 
+import json
+import codecs
 
 User = get_user_model()
 
@@ -48,7 +50,7 @@ class StudentInterestsView(UpdateView):
         return self.request.user.student
 
     def form_valid(self, form):
-        messages.success(self.request, 'Interests updated with success!')
+        messages.success(self.request, 'Интересы обновлены')
         return super().form_valid(form)
 
 
@@ -81,7 +83,7 @@ class QuizResultsView(View):
         quiz = Quiz.objects.get(id = kwargs['pk'])
         taken_quiz = TakenQuiz.objects.filter(student = request.user.student, quiz = quiz)
         if not taken_quiz:
-            """
+            """ 
             Don't show the result if the user didn't attempted the quiz
             """
             return render(request, '404.html')
