@@ -12,6 +12,7 @@ urlpatterns = [
     path('students/', include(([        
         path('', students.StudentList.as_view(), name='student_list'),
         path('<int:student>/', students.StudentDetail.as_view(), name='student_detail'),
+        path('maps/', students.StudentMaps.as_view(), name='student_maps'),
         path('interests/', students.StudentInterestsView.as_view(), name='student_interests'),
         path('taken/', students.TakenQuizListView.as_view(), name='taken_quiz_list'),
         path('quiz/', students.QuizListView.as_view(), name='quiz_list'),

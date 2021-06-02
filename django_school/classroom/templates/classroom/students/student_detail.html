@@ -32,6 +32,7 @@
         <tr><td>Полнота</td><td>{{student.score1}}</td></tr>
         <tr><td>Целостность</td><td>{{student.score2}}</td></tr>
         <tr><td>Умения</td><td>{{student.score3}}</td></tr>
+        <tr><td><a href="{% url 'students:student_maps' %}">Интеллектуальные карты</a></td><tr>
         <script type="text/javascript">
             function alterText(){
                 document.getElementById('hello').innerHTML = empDesignation();
