@@ -12,14 +12,9 @@
   </nav>
   <h2 class="mb-3">Добавить вопрос</h2>
   <p class="lead">Введите вопрос.</p>
-  <form method="post" novalidate>
+  <form method="post" novalidate enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit">Загрузить</button>
-    {% if img_obj %}
-      <h3>Succesfully uploaded : {{img_obj.title}}</h3>
-      <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
-    {% endif %}
     <button type="submit" class="btn btn-success">Сохранить</button>
     <a href="{% url 'teachers:quiz_change' quiz.pk %}" class="btn btn-outline-secondary" role="button">Отмена</a>
   </form>

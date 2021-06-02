@@ -1,4 +1,6 @@
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from .views import classroom, students, teachers
 
@@ -28,3 +30,7 @@ urlpatterns = [
         path('quiz/<int:quiz_pk>/question/<int:question_pk>/delete/', teachers.QuestionDeleteView.as_view(), name='question_delete'),
     ], 'classroom'), namespace='teachers')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
