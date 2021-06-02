@@ -349,9 +349,9 @@ line.link {
     [{
       className: 'germany', // optional can be used for styling
       axes: [
-        {axis: "UPR", value: 9},
-        {axis: "CHL", value: 2},
-        {axis: "POL", value: 5},
+        {axis: "UPR", value: 1},
+        {axis: "CHL", value: 1},
+        {axis: "POL", value: 1},
       ]
     }]
     ,
@@ -447,7 +447,6 @@ function update() {
   console.log(index);
   var nodes = flatten(root),
       links = d3.layout.tree().links(nodes);
-
 
   // Restart the force layout.
   force

@@ -16,6 +16,8 @@ from ..decorators import student_required
 from ..forms import StudentInterestsForm, StudentSignUpForm, TakeQuizForm
 from ..models import Quiz, Student, TakenQuiz, Question
 
+import json
+import codecs
 
 User = get_user_model()
 
@@ -78,7 +80,7 @@ class QuizResultsView(View):
         quiz = Quiz.objects.get(id = kwargs['pk'])
         taken_quiz = TakenQuiz.objects.filter(student = request.user.student, quiz = quiz)
         if not taken_quiz:
-            """
+            """ 
             Don't show the result if the user didn't attempted the quiz
             """
             return render(request, '404.html')
@@ -231,6 +233,33 @@ class StudentMaps(View):
 
     def get(self, request, **kwargs):
         taken_quiz = TakenQuiz.objects.filter(student=request.user.student)
+
+        data = {}
+        data['name'] = 'Курс'
+        data['size'] = 5507
+        data['children'] = []
+        a = []
+        data['children'].append({
+            'name': "Раздел2",
+            'size': 5507,
+            'children': a
+        })
+        a.append({
+            'name': 'Параграф1',
+            'size': 5507
+        })
+        a.append({
+            'name': 'Параграф2',
+            'size': 5507
+        })
+        a.append({
+            'name': 'Параграф3',
+            'size': 5507
+        })
+        
+        with codecs.open('data.json', 'w', encoding='utf-8') as outfile:
+            json.dump(data, outfile, indent=4, ensure_ascii=False)
+
 
         return render(request, 'classroom/students/maps.html',
                       {'taken_quiz': taken_quiz,})
