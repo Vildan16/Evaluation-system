@@ -223,3 +223,14 @@ class StudentDetail(View):
         
         return render(request,'classroom/students/student_detail.html', 
             {'student': student, 'subjects':subjects})
+
+
+class StudentMaps(View):
+
+    """Show Maps of a Student"""
+
+    def get(self, request, **kwargs):
+        taken_quiz = TakenQuiz.objects.filter(student=request.user.student)
+
+        return render(request, 'classroom/students/maps.html',
+                      {'taken_quiz': taken_quiz,})
