@@ -407,6 +407,9 @@ line.link {
     mean1 /= np1
     mean2 /= np1
     mean3 /= np1
+    console.log(mean1)
+    console.log(mean2)
+    console.log(mean3)
 
     data[np1] =
             [
@@ -414,52 +417,55 @@ line.link {
                   className: "germany",
                   axes:
                   [
-                    {axis: "UPR", value: mean3},
+                    {axis: "UPR", value: 100},
                     {axis: "CHL", value: mean2},
                     {axis: "POL", value: mean1}
                   ]
                 }
               ]
 
-    mean11 = 0
-    mean22 = 0
-    mean33 = 0
+      var mean11 = 0
+      var mean22 = 0
+      var mean33 = 0
 
-    for (i = np1; i < np2+np1; i++)
-    {
-      data[i+1] =
+    if (np2 !== 0){
+
+      for (i = np1; i < np2+np1; i++)
+      {
+        data[i+1] =
+                [
+                  {
+                    className: "germany",
+                    axes:
+                    [
+                      {axis: "UPR", value: test[i][2]},
+                      {axis: "CHL", value: test[i][1]},
+                      {axis: "POL", value: test[i][0]}
+                    ]
+                  }
+                ]
+        mean11 += test[i][0]
+        mean22 += test[i][1]
+        mean33 += test[i][2]
+      }
+
+        mean11 /= np2
+        mean22 /= np2
+        mean33 /= np2
+
+       data[n_sect+len - 1] =
               [
-                {
-                  className: "germany",
-                  axes:
-                  [
-                    {axis: "UPR", value: test[i][2]},
-                    {axis: "CHL", value: test[i][1]},
-                    {axis: "POL", value: test[i][0]}
-                  ]
-                }
-              ]
-      mean11 += test[i][0]
-      mean22 += test[i][1]
-      mean33 += test[i][2]
-    }
-
-    mean11 /= np2
-    mean22 /= np2
-    mean33 /= np2
-
-     data[n_sect+len - 1] =
-            [
-                {
-                  className: "germany",
-                  axes:
-                  [
-                    {axis: "UPR", value: mean33},
-                    {axis: "CHL", value: mean22},
-                    {axis: "POL", value: mean11}
-                  ]
-                }
-              ]
+                  {
+                    className: "germany",
+                    axes:
+                    [
+                      {axis: "UPR", value: mean33},
+                      {axis: "CHL", value: mean22},
+                      {axis: "POL", value: mean11}
+                    ]
+                  }
+                ]
+        }
     data[n_sect+len] =
             [
                 {

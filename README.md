@@ -34,7 +34,6 @@ Create the database and run the development server:
 ```bash
 cd django_school
 python manage.py migrate
-python manage.py loaddata datas.json
 python manage.py runserver
 ```
 

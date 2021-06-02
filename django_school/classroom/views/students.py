@@ -165,15 +165,19 @@ def take_quiz(request, pk):
 
                     student.score += percentage
                     student.score /= TakenQuiz.objects.filter(student=student).count()
+                    student.score = round(student.score, 2)
 
                     student.score1 += percentage1
                     student.score1 /= TakenQuiz.objects.filter(student=student).count()
+                    student.score1 = round(student.score1, 2)
 
                     student.score2 += percentage2
                     student.score2 /= TakenQuiz.objects.filter(student=student).count()
+                    student.score2 = round(student.score2, 2)
 
                     student.score3 += percentage3
                     student.score3 /= TakenQuiz.objects.filter(student=student).count()
+                    student.score3 = round(student.score3, 2)
 
                     student.save()
                     if percentage < 50.0:
@@ -238,7 +242,6 @@ class StudentMaps(View):
         taken_quiz = TakenQuiz.objects.filter(student=request.user.student)
 
         unique_section = []
-        paragraphs = []
         length = 0
         for x in taken_quiz:
             unique_section.append(str(x.quiz.subject)[7])
