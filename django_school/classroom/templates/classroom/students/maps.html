@@ -345,6 +345,22 @@ line.link {
   RadarChart.defaultConfig.w = 100;
   RadarChart.defaultConfig.h = 100;
 
+
+
+  let test = []
+
+  {% for x in taken_quiz %}
+    test.push([
+            "{{x.percentage}}",
+            "{{x.score1}}",
+            "{{x.score2}}",
+            "{{x.score3}}"
+    ])
+  {% endfor %}
+
+  console.log(test)
+
+
   var data = [
     [{
       className: 'germany', // optional can be used for styling

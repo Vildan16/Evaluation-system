@@ -2,6 +2,9 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+import json
+import codecs
+from collections import Counter
 
 from django.db import transaction
 from django.db.models import Count, Sum
@@ -234,6 +237,7 @@ class StudentMaps(View):
     def get(self, request, **kwargs):
         taken_quiz = TakenQuiz.objects.filter(student=request.user.student)
 
+<<<<<<< HEAD
         data = {}
         data['name'] = 'Курс'
         data['size'] = 5507
@@ -258,6 +262,50 @@ class StudentMaps(View):
         })
         
         with codecs.open('data.json', 'w', encoding='utf-8') as outfile:
+=======
+        unique_section = []
+        paragraphs = []
+        length = 0
+        for x in taken_quiz:
+            unique_section.append(str(x.quiz.subject)[7])
+            length += 1
+        c = Counter(unique_section)
+        unique_section = list(set(unique_section))
+        unique_section.sort()
+
+        pars = {
+            "n": len(unique_section),
+        }
+
+        for i in range(1, len(unique_section) + 1):
+            pars[f"p{i}"] = c[f"{unique_section[i-1]}"]
+
+        data = {
+            "name": "Курс",
+            "size": 5507,
+            "children": []
+        }
+
+        a = []
+        for i in range(1, pars["n"]+1):
+            for j in range(pars[f"p{i}"]):
+                a.append(
+                    {
+                        "name": f"Параграф {j + 1}", "size": 5507
+                    }
+                )
+
+            data["children"].append(
+                {
+                    "name": f"Раздел {i}", "size": 5507, "children": a
+                }
+            )
+            a = []
+
+
+
+        with codecs.open('static/css/graph.json', 'w', encoding='utf-8') as outfile:
+>>>>>>> af59110dd100e171293cd70b4f43b4d9b464dd38
             json.dump(data, outfile, indent=4, ensure_ascii=False)
 
 
