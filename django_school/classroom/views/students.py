@@ -237,32 +237,6 @@ class StudentMaps(View):
     def get(self, request, **kwargs):
         taken_quiz = TakenQuiz.objects.filter(student=request.user.student)
 
-<<<<<<< HEAD
-        data = {}
-        data['name'] = 'Курс'
-        data['size'] = 5507
-        data['children'] = []
-        a = []
-        data['children'].append({
-            'name': "Раздел2",
-            'size': 5507,
-            'children': a
-        })
-        a.append({
-            'name': 'Параграф1',
-            'size': 5507
-        })
-        a.append({
-            'name': 'Параграф2',
-            'size': 5507
-        })
-        a.append({
-            'name': 'Параграф3',
-            'size': 5507
-        })
-        
-        with codecs.open('data.json', 'w', encoding='utf-8') as outfile:
-=======
         unique_section = []
         paragraphs = []
         length = 0
@@ -305,7 +279,6 @@ class StudentMaps(View):
 
 
         with codecs.open('static/css/graph.json', 'w', encoding='utf-8') as outfile:
->>>>>>> af59110dd100e171293cd70b4f43b4d9b464dd38
             json.dump(data, outfile, indent=4, ensure_ascii=False)
 
 

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <style>
 
 .node circle {
@@ -323,7 +322,7 @@ line.link {
   draw: function(id, d, options) {
     var chart = RadarChart.chart().config(options);
     var cfg = chart.config();
-
+    
     d3.select(id).select('svg').remove();
     d3.select(id)
       .append("svg")
@@ -452,7 +451,7 @@ var link = svg.selectAll(".link"),
 
 
 
-d3.json("/static/css/graph.json", function(error, json) {
+d3.json("/static/css/graph.json?nocache=123", function(error, json) {
   if (error) throw error;
 
   root = json;
