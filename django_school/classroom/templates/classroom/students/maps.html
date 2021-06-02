@@ -11,7 +11,7 @@
 }
 
 .node text {
-  font: 10px sans-serif;
+  font: 12px sans-serif;
   pointer-events: none;
   text-anchor: middle;
 }
@@ -167,7 +167,7 @@ line.link {
               })
               .attr('dy', function(d, i) {
                 var p = getVerticalPosition(i, 0.5);
-                return ((p < 0.1) ? '1em' : ((p > 0.9) ? '0' : '0.5em'));
+                return ((p < 0.1) ? '-0.5em' : ((p > 0.9) ? '0' : '1.2em'));
               })
               .text(function(d) { return d; })
               .attr('x', function(d, i){ return getHorizontalPosition(i, cfg.w / 2, cfg.factorLegend); })
@@ -227,6 +227,7 @@ line.link {
         if(cfg.circles && cfg.radius) {
           var tooltip = container.selectAll('.tooltip').data([1]);
           tooltip.enter().append('text').attr('class', 'tooltip');
+          console.log(tooltip)
 
           var circleGroups = container.selectAll('g.circle-group').data(data, cfg.axisJoin);
 
@@ -259,13 +260,13 @@ line.link {
                 .attr('x', d[0].x - 10)
                 .attr('y', d[0].y - 5)
                 .text(d[0].value)
-                .classed('visible', 1);
+                .classed('visible', 0);
 
               container.classed('focus', 1);
               container.select('.area.radar-chart-serie'+d[1]).classed('focused', 1);
             })
             .on('mouseout', function(d){
-              tooltip.classed('visible', 0);
+              tooltip.classed('visible', 1);
 
               container.classed('focus', 0);
               container.select('.area.radar-chart-serie'+d[1]).classed('focused', 0);
@@ -341,9 +342,9 @@ line.link {
   <script>
 
   RadarChart.defaultConfig.color = function() {};
-  RadarChart.defaultConfig.radius = 3;
-  RadarChart.defaultConfig.w = 100;
-  RadarChart.defaultConfig.h = 100;
+  RadarChart.defaultConfig.radius = 5;
+  RadarChart.defaultConfig.w = 90;
+  RadarChart.defaultConfig.h = 90;
 
 
 
@@ -395,9 +396,9 @@ line.link {
                   className: "germany",
                   axes:
                   [
-                    {axis: "UPR", value: test[i][2]},
-                    {axis: "CHL", value: test[i][1]},
-                    {axis: "POL", value: test[i][0]}
+                    {axis: "UPR " + Math.round(test[i][2]), value: test[i][2]},
+                    {axis: "CHL " + Math.round(test[i][1]), value: test[i][1]},
+                    {axis: "POL " + Math.round(test[i][0]), value: test[i][0]}
                   ]
                 }
               ]
@@ -408,9 +409,6 @@ line.link {
     mean1 /= np1
     mean2 /= np1
     mean3 /= np1
-    console.log(mean1)
-    console.log(mean2)
-    console.log(mean3)
 
     data[np1] =
             [
@@ -418,9 +416,9 @@ line.link {
                   className: "germany",
                   axes:
                   [
-                    {axis: "UPR", value: 100},
-                    {axis: "CHL", value: mean2},
-                    {axis: "POL", value: mean1}
+                    {axis: "UPR " + Math.round(mean3), value: mean3},
+                    {axis: "CHL " + Math.round(mean2), value: mean2},
+                    {axis: "POL " + Math.round(mean1), value: mean1}
                   ]
                 }
               ]
@@ -439,9 +437,9 @@ line.link {
                     className: "germany",
                     axes:
                     [
-                      {axis: "UPR", value: test[i][2]},
-                      {axis: "CHL", value: test[i][1]},
-                      {axis: "POL", value: test[i][0]}
+                      {axis: "UPR " + Math.round(test[i][2]), value: test[i][2]},
+                      {axis: "CHL " + Math.round(test[i][1]), value: test[i][1]},
+                      {axis: "POL " + Math.round(test[i][0]), value: test[i][0]}
                     ]
                   }
                 ]
@@ -460,9 +458,9 @@ line.link {
                     className: "germany",
                     axes:
                     [
-                      {axis: "UPR", value: mean33},
-                      {axis: "CHL", value: mean22},
-                      {axis: "POL", value: mean11}
+                      {axis: "UPR " + Math.round(mean33), value: mean33},
+                      {axis: "CHL " + Math.round(mean22), value: mean22},
+                      {axis: "POL " + Math.round(mean11), value: mean11}
                     ]
                   }
                 ]
@@ -473,9 +471,9 @@ line.link {
                   className: "germany",
                   axes:
                   [
-                    {axis: "UPR", value: (mean3 + mean33) / n_sect},
-                    {axis: "CHL", value: (mean2 + mean22) / n_sect},
-                    {axis: "POL", value: (mean1 + mean11) / n_sect}
+                    {axis: "UPR " + Math.round((mean3 + mean33) / n_sect), value: (mean3 + mean33) / n_sect},
+                    {axis: "CHL " + Math.round((mean2 + mean22) / n_sect), value: (mean2 + mean22) / n_sect},
+                    {axis: "POL " + Math.round((mean1 + mean11) / n_sect), value: (mean1 + mean11) / n_sect}
                   ]
                 }
               ]
@@ -507,13 +505,13 @@ var cfg = chart.config();
 var index = 2;
 
 var width = 1900,
-    height = 1000,
+    height = 700,
     root;
 
 var force = d3.layout.force()
-    .linkDistance(250)
-    .charge(-300)
-    .gravity(.0009)
+    .linkDistance(200)
+    .charge(-3000)
+    .gravity(.099)
     .size([width, height])
     .on("tick", tick);
 
@@ -571,7 +569,7 @@ function update() {
 
 
   nodeEnter.append("text")
-      .attr("dy", "-5em")
+      .attr("dy", "-5.7em")
       .text(function(d) { return d.name; });
 
   node.select("circle")
@@ -588,9 +586,8 @@ function tick() {
 }
 
 function color(d) {
-  return d._children ? "#9ac433" // collapsed package
-      : d.children ? "#c6dbef" // expanded package
-      : "#9ac433"; // leaf node
+  return d._children ? "#9ac433" : d.children ? "#4d8cc6" : "#ae459d"; // leaf node
+
 }
 
 // Toggle children on click.
@@ -619,7 +616,6 @@ function flatten(root) {
   recurse(root);
   return nodes;
 }
-
 
 </script>
 

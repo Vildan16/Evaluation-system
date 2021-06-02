@@ -257,7 +257,7 @@ class StudentMaps(View):
 
         data = {
             "name": "Курс",
-            "size": 5507,
+            "size": 8207,
             "children": []
         }
 
@@ -266,13 +266,13 @@ class StudentMaps(View):
             for j in range(pars[f"p{i}"]):
                 a.append(
                     {
-                        "name": f"Параграф {j + 1}", "size": 5507
+                        "name": f"Параграф {j + 1}", "size": 7507
                     }
                 )
 
             data["children"].append(
                 {
-                    "name": f"Раздел {i}", "size": 5507, "children": a
+                    "name": f"Раздел {i}", "size": 7907, "children": a
                 }
             )
             a = []
