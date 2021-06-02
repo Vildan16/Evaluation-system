@@ -279,6 +279,8 @@ class StudentMaps(View):
         with codecs.open('static/css/graph.json', 'w', encoding='utf-8') as outfile:
             json.dump(data, outfile, indent=4, ensure_ascii=False)
 
-
+        if pars["n"] and pars["p1"]:
+            return render(request, 'classroom/students/maps.html',
+                      {'taken_quiz': taken_quiz, "n_sect": pars["n"], "n_p": pars["p1"]})
         return render(request, 'classroom/students/maps.html',
-                      {'taken_quiz': taken_quiz,})
+                      {'taken_quiz': taken_quiz, "n_sect": 0, "n_p": 0})
