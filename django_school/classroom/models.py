@@ -66,6 +66,7 @@ class Student(models.Model):
     score1 = models.FloatField(default=0)
     score2 = models.FloatField(default=0)
     score3 = models.FloatField(default=0)
+    predict = models.FloatField(default=0)
 
     def get_unanswered_questions(self, quiz):
         answered_questions = self.quiz_answers \
