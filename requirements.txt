@@ -3,3 +3,5 @@ django-crispy-forms==1.9.0
 pillow
 sklearn
 numpy
+tensorflow
+reportlab

@@ -7,6 +7,6 @@ urlpatterns = [
 	path('admin/', admin.site.urls),
     path('', include('classroom.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/signup/', students.StudentSignUpView.as_view(), name='signup'),
+    path('accounts/signup/', students.StudentSignUpView.as_view(), name='signup'),ls
     path('accounts/signup/teacher/', teachers.TeacherSignUpView.as_view(), name='teacher_signup'),
 ]
