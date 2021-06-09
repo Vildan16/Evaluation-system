@@ -31,7 +31,6 @@ class TeacherSignUpForm(UserCreationForm):
 
 
 class StudentSignUpForm(UserCreationForm):
-    """Форма для создания интересов"""
     email = forms.CharField()
     first_name = forms.CharField(label="Имя")
     last_name = forms.CharField(label="Фамилия")
@@ -45,7 +44,6 @@ class StudentSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_student = True
         user.save()
-        """Интересы юзера добавляются"""
         student = Student.objects.create(user=user,
                                          email=self.cleaned_data.get('email'),
                                          first_name=self.cleaned_data.get('first_name'),
@@ -58,9 +56,6 @@ class StudentInterestsForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ()
-        #widgets = {
-        #    'interests': forms.CheckboxSelectMultiple
-        #}
 
 
 class QuestionForm(forms.ModelForm):

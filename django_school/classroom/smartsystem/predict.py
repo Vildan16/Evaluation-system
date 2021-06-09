@@ -2,6 +2,8 @@ import pickle
 import numpy as np
 import random
 from sklearn.linear_model import LinearRegression
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
 
 
 def alg():
@@ -45,10 +47,19 @@ def alg():
     x_train -= mean
     x_train /= std
 
-    lm = LinearRegression()
-    lm.fit(x_train, y_train)
+    model = Sequential()
+    model.add(Dense(64, activation='relu', input_shape=(x_train.shape[1],)))
+    model.add(Dense(1))
 
-    return lm, mean, std
+    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+
+    model.fit(x_train,
+              y_train,
+              epochs=10,
+              batch_size=1,
+              verbose=0)
+
+    return model, mean, std
 
 model, mean, std = alg()
 

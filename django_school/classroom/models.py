@@ -60,8 +60,7 @@ class Student(models.Model):
     first_name = models.CharField(default="", max_length=30)
     last_name = models.CharField(default="", max_length=30)
     group = models.CharField(default="", max_length=10)
-    
-    # User reputation score.
+
     score = models.FloatField(default=0)
     score1 = models.FloatField(default=0)
     score2 = models.FloatField(default=0)

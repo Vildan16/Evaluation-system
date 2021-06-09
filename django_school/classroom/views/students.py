@@ -162,21 +162,29 @@ def take_quiz(request, pk):
                     TakenQuiz.objects.create(student=student, quiz=quiz, score=correct_answers, percentage= percentage,
                                             score1=percentage1, score2=percentage2, score3=percentage3)
 
+                    count = TakenQuiz.objects.filter(student=student).count()
+
+                    if count > 2:
+                        student.score *= count - 1
+                        student.score1 *= count - 1
+                        student.score2 *= count - 1
+                        student.score3 *= count - 1
+
 
                     student.score += percentage
-                    student.score /= TakenQuiz.objects.filter(student=student).count()
+                    student.score /= count
                     student.score = round(student.score, 2)
 
                     student.score1 += percentage1
-                    student.score1 /= TakenQuiz.objects.filter(student=student).count()
+                    student.score1 /= count
                     student.score1 = round(student.score1, 2)
 
                     student.score2 += percentage2
-                    student.score2 /= TakenQuiz.objects.filter(student=student).count()
+                    student.score2 /= count
                     student.score2 = round(student.score2, 2)
 
                     student.score3 += percentage3
-                    student.score3 /= TakenQuiz.objects.filter(student=student).count()
+                    student.score3 /= count
                     student.score3 = round(student.score3, 2)
 
                     test = predict(student.score1, student.score2, student.score3)
@@ -190,7 +198,6 @@ def take_quiz(request, pk):
                     else:
                         messages.success(request, 'Поздравляю! Твой результат: %s. \nПолнота: %s \nЦелостность: %s \nУмения: %s'
                                          % (percentage, percentage1, percentage2, percentage3))
-                    # return redirect('students:quiz_list')
                     return redirect('students:student_quiz_results', pk)
     else:
         form = TakeQuizForm(question=question)
@@ -205,9 +212,7 @@ def take_quiz(request, pk):
     })
 
 
-# @method_decorator([login_required, student_required], name='dispatch')
 class StudentList(ListView):
-    # model = get_user_model()
     paginate_by = 36
     template_name = 'classroom/students/student_list.html'
     context_object_name = 'students'
@@ -218,13 +223,9 @@ class StudentList(ListView):
 
         queryset = Student.objects.order_by('-score')
         if query:
-            # queryset = queryset.annotate(
-            #     full_name = Concat('first_name','last_name')
-            # ).filter(full_name__icontains = query)
             queryset = queryset.filter(user__username__icontains = query)
         return queryset
 
-# @method_decorator([login_required, student_required], name='dispatch')
 class StudentDetail(View):
     """Show Details of a Student"""
     def get(self, request, **kwargs):

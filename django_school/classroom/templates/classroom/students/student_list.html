@@ -39,8 +39,6 @@
       <div class="media-body" style="font-size: 12px">
         <!-- <a href="#">{{user.get_full_name}}</a><br> -->
         <a href="{% url 'students:student_detail' student=student.user.id %}">{{student.user.username}}</a><br>
-        <strong>{{student.score}}</strong><br>
-        {{student.taken_quizzes.all|top_subject}}
       </div>
     </div>
   </div>
