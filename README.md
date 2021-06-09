@@ -4,7 +4,7 @@
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/suhailvs/django-schools
+https://github.com/Vildan16/Evaluation-system.git
 ```
 
 Create Virtual Env and Install the requirements:
