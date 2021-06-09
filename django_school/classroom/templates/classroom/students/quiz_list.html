@@ -10,12 +10,14 @@
 
   <table class="table table-bordered mb-0" id="tb_quizlist" >
     <thead>
+    {% if quizzes.objects.all %}
       <tr>
         <th>Тест</th>
         <th class="d-none d-sm-table-cell">Тема</th>
         <th class="d-none d-sm-table-cell">Вопросы</th>
         <th></th>
       </tr>
+    {% endif %}
     </thead>
     <tbody>
       {% for quiz in quizzes %}
@@ -29,11 +31,17 @@
         </tr>
       {% empty %}
       {% endfor %}
+      {% if not quizzes.objects.all %}
+          <br><p>Все тесты пройдены! Нажмите на кнопку, чтобы скачать сертификат.
+        <a href="{% url 'students:sertificate'%}" class="btn btn-primary">Сертификат</a></p>
+
+      {% endif %}
     </tbody>
   </table>
 {% endblock %}
 
 {% block js %}
+{% if quizzes.objects.all %}
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'datatables/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'datatables/dataTables.bootstrap4.min.js' %}"></script>
@@ -42,4 +50,5 @@ $(document).ready(function() {
     $('#tb_quizlist').DataTable({"order": [[ 2, "desc" ]]});
 });
 </script>
+{%endif%}
 {% endblock %}

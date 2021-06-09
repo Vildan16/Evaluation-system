@@ -16,6 +16,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView
 from django.views import View
 
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+
 from ..decorators import student_required
 from ..forms import StudentInterestsForm, StudentSignUpForm, TakeQuizForm
 from ..models import Quiz, Student, TakenQuiz, Question
@@ -67,6 +70,7 @@ class QuizListView(ListView):
         queryset = Quiz.objects.exclude(pk__in=taken_quizzes) \
             .annotate(questions_count=Count('questions')) \
             .filter(questions_count__gt=0)
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -238,6 +242,23 @@ class StudentDetail(View):
         return render(request,'classroom/students/student_detail.html', 
             {'student': student, 'subjects':subjects})
 
+def some_view(request):
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    student = request.user.student
+
+    score = student.score
+
+    p = canvas.Canvas(response)
+
+    p.drawString(600, 400, str(student.first_name))
+    p.drawString(10, 10, str(score))
+
+    p.showPage()
+    p.save()
+
+    return response
 
 class StudentMaps(View):
 
