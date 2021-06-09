@@ -87,22 +87,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-    # Heroku Database
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'd5hknnaihi88bf',
-    #     'USER': 'vpidynpvpkjahr',
-    #     'PASSWORD': '3005007b069891de106545657b9cb998dcb3bcf974d2d4f1c57d6f2746c692af',
-    #     'HOST': 'ec2-18-210-51-239.compute-1.amazonaws.com',
-    #     'PORT': '5432',
-    # }
 }
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.0/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -113,17 +100,12 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-
-# Custom Django auth settings
 
 AUTH_USER_MODEL = 'classroom.User'
 
@@ -136,8 +118,6 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 
-# Messages built-in framework
-
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-secondary',
     messages.INFO: 'alert-info',
@@ -147,12 +127,8 @@ MESSAGE_TAGS = {
 }
 
 
-# Third party apps configuration
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# Base url to serve media files
 MEDIA_URL = '/media/'
 
-# Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

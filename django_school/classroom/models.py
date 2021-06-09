@@ -60,6 +60,7 @@ class Student(models.Model):
     first_name = models.CharField(default="", max_length=30)
     last_name = models.CharField(default="", max_length=30)
     group = models.CharField(default="", max_length=10)
+    rules = models.BooleanField(default=False)
 
     score = models.FloatField(default=0)
     score1 = models.FloatField(default=0)
@@ -83,6 +84,7 @@ class Teacher(models.Model):
     email = models.CharField(default="", max_length=30)
     first_name = models.CharField(default="", max_length=30)
     last_name = models.CharField(default="", max_length=30)
+    rules = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

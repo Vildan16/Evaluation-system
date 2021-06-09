@@ -42,7 +42,6 @@ line.link {
   </style>
 
   <script src="https://d3js.org/d3.v3.js"></script>
-  <!-- <script src="https://rawgit.com/tpreusse/radar-chart-d3/master/src/radar-chart.js"></script> -->
 
   <script>
     var RadarChart = {
@@ -73,8 +72,6 @@ line.link {
       selection.each(function(data) {
         var container = d3.select(this);
 
-        // allow simple notation
-
         data = data.map(function(datum) {
           if(datum instanceof Array) {
             datum = {axes: datum.conversations};
@@ -102,8 +99,6 @@ line.link {
         function getVerticalPosition(i, range, factor){
           return getPosition(i, range, factor, Math.cos);
         }
-
-        // levels && axises
         var levelFactors = d3.range(0, cfg.levels).map(function(level) {
           return radius * ((level + 1) / cfg.levels);
         });
@@ -174,8 +169,6 @@ line.link {
               .attr('y', function(d, i){ return getVerticalPosition(i, cfg.h / 2, cfg.factorLegend); });
           }
         }
-
-        // content
         data.forEach(function(d){
           d.axes.forEach(function(axis, i) {
             axis.x = getHorizontalPosition(i, cfg.w/2, (parseFloat(Math.max(axis.value, 0))/maxValue)*cfg.factor);
@@ -197,20 +190,19 @@ line.link {
           });
 
         polygon.exit()
-          .classed('d3-exit', 1) // trigger css transition
+          .classed('d3-exit', 1)
           .transition().duration(cfg.transitionDuration)
             .remove();
 
         polygon
           .each(function(d, i) {
-            var classed = {'d3-exit': 0}; // if exiting element is being reused
+            var classed = {'d3-exit': 0};
             classed['radar-chart-serie' + i] = 1;
             if(d.className) {
               classed[d.className] = 1;
             }
             d3.select(this).classed(classed);
           })
-          // styles should only be transitioned with css
           .style('stroke', function(d, i) { return cfg.color(i); })
           .style('fill', function(d, i) { return cfg.color(i); })
           .transition().duration(cfg.transitionDuration)
@@ -221,7 +213,7 @@ line.link {
               }).join(' ');
             })
             .each('start', function() {
-              d3.select(this).classed('d3-enter', 0); // trigger css transition
+              d3.select(this).classed('d3-enter', 0);
             });
 
         if(cfg.circles && cfg.radius) {
@@ -233,12 +225,12 @@ line.link {
 
           circleGroups.enter().append('g').classed({'circle-group': 1, 'd3-enter': 1});
           circleGroups.exit()
-            .classed('d3-exit', 1) // trigger css transition
+            .classed('d3-exit', 1)
             .transition().duration(cfg.transitionDuration).remove();
 
           circleGroups
             .each(function(d) {
-              var classed = {'d3-exit': 0}; // if exiting element is being reused
+              var classed = {'d3-exit': 0};d
               if(d.className) {
                 classed[d.className] = 1;
               }
@@ -246,7 +238,7 @@ line.link {
             })
             .transition().duration(cfg.transitionDuration)
               .each('start', function() {
-                d3.select(this).classed('d3-enter', 0); // trigger css transition
+                d3.select(this).classed('d3-enter', 0);
               });
 
           var circle = circleGroups.selectAll('.circle').data(function(datum, i) {
@@ -273,16 +265,15 @@ line.link {
             });
 
           circle.exit()
-            .classed('d3-exit', 1) // trigger css transition
+            .classed('d3-exit', 1)
             .transition().duration(cfg.transitionDuration).remove();
 
           circle
             .each(function(d) {
-              var classed = {'d3-exit': 0}; // if exit element reused
+              var classed = {'d3-exit': 0};
               classed['radar-chart-serie'+d[1]] = 1;
               d3.select(this).classed(classed);
             })
-            // styles should only be transitioned with css
             .style('fill', function(d) { return cfg.color(d[1]); })
             .transition().duration(cfg.transitionDuration)
               // svg attrs with js
@@ -294,10 +285,9 @@ line.link {
                 return d[0].y;
               })
               .each('start', function() {
-                d3.select(this).classed('d3-enter', 0); // trigger css transition
+                d3.select(this).classed('d3-enter', 0);
               });
 
-          // ensure tooltip is upmost layer
           var tooltipEl = tooltip.node();
           tooltipEl.parentNode.appendChild(tooltipEl);
         }
@@ -345,8 +335,6 @@ line.link {
   RadarChart.defaultConfig.radius = 5;
   RadarChart.defaultConfig.w = 90;
   RadarChart.defaultConfig.h = 90;
-
-
 
   let test = []
 
@@ -483,17 +471,6 @@ line.link {
   }
   var data = inputArray(test);
 
-
-  // function randomDataset() {
-  //   return data.map(function(d) {
-  //     return {
-  //       className: d.className,
-  //       axes: d.axes.map(function(axis) {
-  //         return {axis: axis.axis, value: axis.value};
-  //       })
-  //     };
-  //   });
-  // }
   </script>
 
 <body>
@@ -535,14 +512,11 @@ function update() {
   var nodes = flatten(root),
       links = d3.layout.tree().links(nodes);
 
-
-  // Restart the force layout.
   force
       .nodes(nodes)
       .links(links)
       .start();
 
-  // Update links.
   link = link.data(links, function(d) { return d.target.id; });
 
   link.exit().remove();
@@ -550,7 +524,6 @@ function update() {
   link.enter().insert("line", ".node")
       .attr("class", "link");
 
-  // Update nodes.
   node = node.data(nodes, function(d) { return d.id; });
 
   node.exit().remove();
@@ -590,9 +563,9 @@ function color(d) {
 
 }
 
-// Toggle children on click.
+
 function click(d) {
-  if (d3.event.defaultPrevented) return; // ignore drag
+  if (d3.event.defaultPrevented) return;
   if (d.children) {
     d._children = d.children;
     d.children = null;

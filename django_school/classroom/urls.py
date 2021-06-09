@@ -7,7 +7,6 @@ from .views import classroom, students, teachers
 urlpatterns = [
     path('', classroom.home, name='home'),
     path('about/', classroom.AboutView.as_view(), name='about'),
-    # path('quizzes/', classroom.QuizListView.as_view(), name='quiz_list'),
 
     path('students/', include(([        
         path('', students.StudentList.as_view(), name='student_list'),

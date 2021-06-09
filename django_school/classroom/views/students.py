@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 import json
 import codecs
 from collections import Counter
+import datetime
 import pickle
 from ..smartsystem.predict import predict
 from django.db import transaction
@@ -17,6 +18,9 @@ from django.views.generic import CreateView, ListView, UpdateView
 from django.views import View
 
 from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import reportlab
 from django.http import HttpResponse
 
 from ..decorators import student_required
@@ -65,7 +69,6 @@ class QuizListView(ListView):
 
     def get_queryset(self):
         student = self.request.user.student
-        # student_interests = student.interests.values_list('pk', flat=True)
         taken_quizzes = student.quizzes.values_list('pk', flat=True)
         queryset = Quiz.objects.exclude(pk__in=taken_quizzes) \
             .annotate(questions_count=Count('questions')) \
@@ -86,13 +89,9 @@ class QuizResultsView(View):
         quiz = Quiz.objects.get(id = kwargs['pk'])
         taken_quiz = TakenQuiz.objects.filter(student = request.user.student, quiz = quiz)
         if not taken_quiz:
-            """
-            Don't show the result if the user didn't attempted the quiz
-            """
             return render(request, '404.html')
         questions = Question.objects.filter(quiz =quiz)
-        
-        # questions = self.form_class(initial=self.initial)
+
         return render(request, self.template_name, {'questions':questions, 
             'quiz':quiz, 'percentage': taken_quiz[0].percentage,
                                                     "score" : taken_quiz[0].score,
@@ -231,7 +230,6 @@ class StudentList(ListView):
         return queryset
 
 class StudentDetail(View):
-    """Show Details of a Student"""
     def get(self, request, **kwargs):
         student = Student.objects.get(user_id = kwargs['student'])
         subjects = student.taken_quizzes.all() \
@@ -245,15 +243,27 @@ class StudentDetail(View):
 def some_view(request):
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="sertificate.pdf"'
+    now = datetime.datetime.now()
+
     student = request.user.student
 
     score = student.score
+    reportlab.rl_config.warnOnMissingFontGlyphs = 0
+
+    pdfmetrics.registerFont(TTFont('DejaVuSans', 'DejaVuSans.ttf'))
 
     p = canvas.Canvas(response)
+    p.setFont('DejaVuSans', 40)
+    p.drawString(170, 700, "Сертификат")
+    p.setFont('DejaVuSans', 20)
+    p.drawString(90, 650, "Данный сертификат подтверждает, что")
+    p.drawString(220, 600, str(student.first_name) + " " + str(student.last_name))
+    p.drawString(70, 550, 'Окончил курс "Вычислительная математика"')
+    p.drawString(200, 500, "с результатом: " + str(score))
 
-    p.drawString(600, 400, str(student.first_name))
-    p.drawString(10, 10, str(score))
+    p.drawString(40, 250, str(now.strftime("%d-%m-%Y")))
+    p.drawString(340, 250, "Нуриев Н.К. __________")
 
     p.showPage()
     p.save()
@@ -261,8 +271,6 @@ def some_view(request):
     return response
 
 class StudentMaps(View):
-
-    """Show Maps of a Student"""
 
     def get(self, request, **kwargs):
         taken_quiz = TakenQuiz.objects.filter(student=request.user.student)

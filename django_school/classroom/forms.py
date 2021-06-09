@@ -12,6 +12,7 @@ class TeacherSignUpForm(UserCreationForm):
     email = forms.CharField()
     first_name = forms.CharField(label="Имя")
     last_name = forms.CharField(label="Фамилия")
+    rules = forms.BooleanField(label="Я согласен с условиями соглашения об обработке персональных данных")
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -35,6 +36,7 @@ class StudentSignUpForm(UserCreationForm):
     first_name = forms.CharField(label="Имя")
     last_name = forms.CharField(label="Фамилия")
     group = forms.CharField(label="Группа")
+    rules = forms.BooleanField(label="Я согласен с условиями соглашения об обработке персональных данных")
 
     class Meta(UserCreationForm.Meta):
         model = User

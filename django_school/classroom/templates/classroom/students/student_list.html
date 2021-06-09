@@ -1,4 +1,3 @@
-<!-- To show list of students -->
 {% extends 'base.html' %}
 {% load quiz_extras %}
 
@@ -37,7 +36,6 @@
         <img class="mr-3" src="{{ student.user.username|gravatar_url:50 }}" alt="{{student.user.get_full_name}}">
       </a>
       <div class="media-body" style="font-size: 12px">
-        <!-- <a href="#">{{user.get_full_name}}</a><br> -->
         <a href="{% url 'students:student_detail' student=student.user.id %}">{{student.user.username}}</a><br>
       </div>
     </div>

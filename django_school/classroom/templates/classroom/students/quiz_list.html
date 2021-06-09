@@ -20,6 +20,7 @@
     {% endif %}
     </thead>
     <tbody>
+     {% if quizzes.all %}
       {% for quiz in quizzes %}
         <tr{% if quiz.subject.id in student_subjects %} style="background: #fdf7e3"{%endif%}>
           <td class="align-middle">{{ quiz.name }}</td>
@@ -29,9 +30,11 @@
             <a href="{% url 'students:take_quiz' quiz.pk %}" class="btn btn-primary">Начать тест</a>
           </td>
         </tr>
+
       {% empty %}
       {% endfor %}
-      {% if not quizzes.objects.all %}
+     {% endif %}
+      {% if not quizzes.all %}
           <br><p>Все тесты пройдены! Нажмите на кнопку, чтобы скачать сертификат.
         <a href="{% url 'students:sertificate'%}" class="btn btn-primary">Сертификат</a></p>
 
@@ -41,14 +44,14 @@
 {% endblock %}
 
 {% block js %}
-{% if quizzes.objects.all %}
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'datatables/dataTables.bootstrap4.min.js' %}"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#tb_quizlist').DataTable({"order": [[ 2, "desc" ]]});
-});
-</script>
-{%endif%}
+  {% if quizzes.all %}
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'datatables/dataTables.bootstrap4.min.js' %}"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $('#tb_quizlist').DataTable({"order": [[ 2, "desc" ]]});
+    });
+    </script>
+  {%endif%}
 {% endblock %}
